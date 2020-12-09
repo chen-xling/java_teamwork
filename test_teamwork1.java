@@ -15,7 +15,7 @@ public class test_teamwork1 {
 
 	public static void main(String[] args)throws IOException, Exception  {
 		String filePath = "D:\\Atest_teamtask1\\introduce.txt";
-        String newPath = "D:\\Ayingyong5_test";
+        String newPath = "D:\\Ayingyong5_test\\";
 		TeamTask1 teamtask1 = new TeamTask1( filePath, newPath );  //调用已经写好的TeamTask1类 
 		
 		String test_key = teamtask1.key;

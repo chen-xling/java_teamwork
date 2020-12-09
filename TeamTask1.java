@@ -37,7 +37,7 @@ public class TeamTask1 {
 		
 		this.filePath = filePath;
 		this.newPath = newPath;
-		key = hash( filePath );
+		key = addFile( filePath );
 		value = getValue(key);
 	}
 	
