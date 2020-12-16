@@ -31,7 +31,8 @@ public class TeamTask1 {
 	private  String newPath;
 	private  String key;
 	
-	//构造函数，输入原始路径名，和想要放进文件的新路径名
+	//构造函数，输入原始路径名，和想要放进文件的新路径名。
+	//由构造函数，便可完成把原始路径对应的Blob, “拷贝”进新路径里
 	TeamTask1( String filePath, String newPath) throws IOException{
 		this.filePath = filePath;
 		this.newPath  = newPath;

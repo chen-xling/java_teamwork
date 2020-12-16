@@ -68,12 +68,9 @@ public class Gen_hash{
     			File[] fs = dir.listFiles(); 
 			
     			for(int i = 0; i < fs.length; i++) { 
-    				if(fs[i].isFile()) { 
-    					FileInputStream is = new FileInputStream(fs[i]); 
-    					byte[] sha1 = SHA1Checksum(is);
-    					String result = convertToHexString(sha1);  
-    					
-    					m.update(result.getBytes());   //把哈希码存到上一级的内容中去，效果最后是哈希码的哈希码
+    				if(fs[i].isFile()) { 		
+    					String blob = hash( fs[i].getPath() );  //递归，得到blob的哈希值
+    					m.update(blob.getBytes());   //把哈希码存到上一级的内容中去，效果最后是哈希码的哈希码
     					m.update(fs[i].getName().getBytes());  //把文件名存进去
     				}
     				if(fs[i].isDirectory()) { 
