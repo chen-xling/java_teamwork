@@ -12,7 +12,7 @@ import java.io.*;
 public class test_teamtask1 {
 
 	public static void main(String[] args)throws IOException, Exception  {
-		String filePath = "D:\\Users\\chenxling\\Pictures\\py图\\rrr.txt";
+		String filePath = "C:\\Users\\chenxling\\Desktop\\workspace\\Java课程作业\\Charpter6_4.java";
         String newPath = "D:\\Ayingyong5_test";
 		TeamTask1 teamtask1 = new TeamTask1( filePath, newPath );  //调用已经写好的TeamTask1类 
 		
@@ -20,7 +20,7 @@ public class test_teamtask1 {
 		System.out.println("原始路径名为： " + teamtask1.getFilePath() );
 		System.out.println("新的路径名为： " + teamtask1.getNewPath() );
 		System.out.println("该文件的key为： " + teamtask1.getKey() );
-		System.out.println("给定key值，查找到文件的内容为： " +  teamtask1.getValue() );
+		System.out.println("给定key值，查找到文件的内容为：\n" +  teamtask1.getValue() );
 		
 	}
 

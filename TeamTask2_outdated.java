@@ -1,23 +1,16 @@
 package test;
-/*
-小组任务2：
-	给定一个文件夹目录，将其转化成若干tree和blob
-	深度优先遍历此目录
-	遇到子文件就转化成blob并保存
-	遇到子文件夹就递归调用其内部的子文件/文件夹最后构造tree并保存
+//旧版任务二，理解错题意啦--
 
-	使用任务1提供的接口 --- hash表
-	单元测试
- */
-
+//本页做的是以下工作：将原始路径的文件或文件夹，复制到新路径去。新文件夹和文件的名字为相应内容的哈希码
 /*
  * 定义一个TeamTask2类：
  * 数据域：
- * 	-filePath ：传入的文件夹目录
- *  -newFilePath ：新生成的文件夹目录
+ * -filePath ：传入的文件夹目录
+ * -newFilePath ：新生成的文件夹目录
  * 
  * 方法：
- * +void  gen_file()  实现主要功能
+ * +构造方法(filePath, newFilePath)  //在创建TeamTask2类时，调用构造函数即可完成全部copy
+ * +boolean gen_file()   //实现主要功能
  * +String getKey()
  * +String getFilePath()
  * +String getNewFilePath()
@@ -29,14 +22,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class TeamTask2 {
+public class TeamTask2_outdated {
 	private  String filePath;   
 	private  String newFilePath;
 	private  String key;   
 	//public   boolean flag;
 	
 	
-	TeamTask2( String filePath, String newFilePath ) throws IOException{
+	TeamTask2_outdated( String filePath, String newFilePath ) throws IOException{
 		this.filePath = filePath;
 		this.newFilePath = newFilePath;
 		Gen_hash t = new Gen_hash();
@@ -45,7 +38,7 @@ public class TeamTask2 {
 	}
 	
 	public boolean gen_file( String filePath, String newFilePath  ) {
-		//分成三种情况，1.是文件blob，2.是文件夹，里面全是blob, 3. 文件夹里还有文件夹
+		//分成三种情况，1.filePath是文件blob，2.是文件夹，里面全是blob, 3. 文件夹里还有文件夹
 		try {
 			File file1 = new File( filePath );  //file1是原始目录
 		

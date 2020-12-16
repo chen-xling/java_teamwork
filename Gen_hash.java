@@ -38,9 +38,13 @@ public class Gen_hash{
 	    	// 由于MessageDigest对象的digest()方法返回的是字符数组，
 	    	//要得到十六进制的sha1值还需要转为字符串  
 	    	StringBuffer strBuffer = new StringBuffer(); 
-	    	for ( int i = 0; i < data.length; i++ ) {
-	    		strBuffer.append(Integer.toHexString(0xff & data[i])); // 用十六进制数oxff与某个字节值做按位与运算，
-											// 只保留了32位的最后8位，保证负数转换成十六进制不会出错
+	    	
+	    	for(int i = 0; i< data.length; i++) {
+	    		if( (int)data[i]<16 && (int)data[i] >=0 ) {   //修正了不足16（4位）的问题，补0，同时考虑到11111111为负数的情况
+	    			strBuffer.append("0").append(Integer.toString(0xff & data[i], 16));
+	    			continue;
+	    		}
+	    		strBuffer.append(Integer.toString(0xff & data[i], 16));
 	    		}
 	    	return strBuffer.toString();
 	}
@@ -64,12 +68,9 @@ public class Gen_hash{
     			File[] fs = dir.listFiles(); 
 			
     			for(int i = 0; i < fs.length; i++) { 
-    				if(fs[i].isFile()) { 
-    					FileInputStream is = new FileInputStream(fs[i]); 
-    					byte[] sha1 = SHA1Checksum(is);
-    					String result = convertToHexString(sha1);  
-    					
-    					m.update(result.getBytes());   //把哈希码存到上一级的内容中去，效果最后是哈希码的哈希码
+    				if(fs[i].isFile()) { 		
+    					String blob = hash( fs[i].getPath() );  //递归，得到blob的哈希值
+    					m.update(blob.getBytes());   //把哈希码存到上一级的内容中去，效果最后是哈希码的哈希码
     					m.update(fs[i].getName().getBytes());  //把文件名存进去
     				}
     				if(fs[i].isDirectory()) { 
