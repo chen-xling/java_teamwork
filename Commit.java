@@ -18,6 +18,7 @@ import java.io.*;
  */
 
 
+
 /*设计思路
  * 定义一个叫做Commit的类：
  * 数据域：
@@ -43,19 +44,20 @@ import java.io.*;
  */
 
 public class Commit {
-	private static String filePath;
-	static String gitPath ;      //包私有 
-	private String head;
-	private String current_tree_key;
-	private String last_tree_key;
-	private String current_commit_key;
-	private StringBuffer value = new StringBuffer();
+	private static String filePath;   //工作区目录
+	static String gitPath ;          //存放commit文件的目录，包私有，可以供HEAD.java文件使用 
+	private String head;             //上一次生成的commit文件的文件名，也可命名为 last_commit_key
+	private String current_tree_key;   //新生成的commit文件的文件名
+	private String last_tree_key;         //上一次commit的tree key
+	private String current_commit_key;     //新生成的commit文件的文件名
+	private StringBuffer value = new StringBuffer();    //本次commit文件的内容
 	
 	
 	Commit(){};
 	Commit(String  path1, String path2 ) throws IOException{
 		Commit.filePath = path1;
 		Commit.gitPath = path2;
+		new Tree( path1, path2 );   //任务二，由工作区目录生成一个Tree文件，记录工作区的内容
 		gen_commit();
 	}
 	
@@ -67,19 +69,23 @@ public class Commit {
 		this.head = g.head;
 		this.last_tree_key = g.get_last_tree_key();
 		
-		if( current_tree_key != last_tree_key) {
-			File commit = new File(gitPath + "\\" + "temp" );
+		if( !current_tree_key.equals(last_tree_key) )  {        //修改，是判断内容，而不是判断字符串的地址
+			File commit = new File(gitPath + "\\" + "temporary" );
 			PrintWriter p = new PrintWriter (commit);
 			this.value.append( this.current_tree_key );
 			this.value.append( "\n" );
 			this.value.append( this.head );
-			p.write( this.value.toString() );
-			File dest = new File ( gitPath + "\\" + t.hash(commit.getPath()) );
-			commit.renameTo(dest);   //将最新的commit文件重命名为自身value的哈希值
+			//System.out.println(value.toString());
+			p.write( this.value.toString() );  
+			p.close();                 //这个输出流要及时关闭，否则会影响下面的文件改名操作！
+			
+			String newName = t.hash(commit.getPath());
+			File dest = new File ( gitPath + "\\" + newName );
+			boolean rename = commit.renameTo(dest);   //将最新的commit文件重命名为自身value的哈希值
 			
 			current_commit_key = dest.getName();
-			g.update_head(current_commit_key);
-			p.close();
+			g.update_head( current_commit_key );   //更新HEAD文件
+			
 		}
 			
 		else {

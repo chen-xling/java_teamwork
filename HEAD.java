@@ -54,7 +54,7 @@ public class HEAD {
 		else {
 			File last_commit = new File(gitPath + "\\"+ this.head);	
 			Scanner input = new Scanner( last_commit );
-			String last_tree_key = input.nextLine();   //第一行就是存放着tree_key  
+			String last_tree_key = input.nextLine();   //上一次的commit文件里的第一行就是存放着tree_key  
 			input.close();
 			return last_tree_key;
 		}
