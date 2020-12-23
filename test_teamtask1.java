@@ -14,7 +14,7 @@ public class test_teamtask1 {
 	public static void main(String[] args)throws IOException, Exception  {
 		String filePath = "C:\\Users\\chenxling\\Desktop\\workspace\\Java课程作业\\Charpter6_4.java";
         String newPath = "D:\\Ayingyong5_test";
-		TeamTask1 teamtask1 = new TeamTask1( filePath, newPath );  //调用已经写好的TeamTask1类 
+		Blob teamtask1 = new Blob( filePath, newPath );  //调用已经写好的TeamTask1类 
 		
 		
 		System.out.println("原始路径名为： " + teamtask1.getFilePath() );
