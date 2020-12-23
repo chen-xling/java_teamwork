@@ -20,15 +20,21 @@ package test;
  */
 
 /*设计思路：
- * 	定义一个叫做任务二的类：
+ * 	定义一个叫做Tree的类：
  * 	数据域：
  * 		-总的key
  * 		-原始路径P1
  * 		-新路径P2
+ * 		-value
  * 			
  * 方法：
  * 		+构造方法( P1, P2 )
- * 		+goal
+ * 		+void gen_tree()  //完成主要功能
+ * 		+String getValue()  //返回新生成的文件内容
+ * 		+String getKey()
+ * 		+String getFilePath()
+ * 		+String getNewFilePath()
+ * 
  * 
  * 再定义一个内容类，Tree_content：
  * 	数据域：
@@ -38,78 +44,66 @@ package test;
  * 	方法：
  * 		+构造函数：传入子文件的路径，即可完成数据域的填充
  * 			即存储原文件夹里的【子文件】的名字、【子文件】的哈希码、【子文件】的类型（blob or tree)
- * 		+String output():
- * 			打印数据域的所有内容
+ * 		+String output()  返回数据域的所有内容
  * 		+getFilePath
 		+getNewFilePath
 		+getKey
+		+getValue
  */
 
-
-
 import java.io.*;
-import java.util.Scanner;
 
-public class TeamTask2_new_version {
+public class Tree {
 	
-	private String gross_key;
+	private String key;
 	private String filePath;
 	private String newFilePath;
+	private String value;
 	
-	TeamTask2_new_version(String P1, String P2){
+	Tree(){};
+	Tree(String P1, String P2){
 		this.filePath = P1;
 		this.newFilePath = P2;
-		Gen_hash t = new Gen_hash();
-		gross_key = t.hash(P1);
-		gen_tree_file();
+		gen_tree();
 		
 	};
 	
-	public void gen_tree_file() {
+	public void gen_tree() {
 		//分成两种情况，1.filePath是文件blob，2.filePath是文件夹
 		File file1 = new File( filePath );
  
 		try {
 			if( file1.isFile()) {
-				new TeamTask1( filePath, newFilePath );
+				Blob b = new Blob( filePath, newFilePath );
+				value = b.getValue();
 			}
 			else if (file1.isDirectory()) {
-				File newFile = new File( newFilePath + "\\"+ gross_key);   
+				File newFile = new File( newFilePath + "\\"+ "temp");   
 				newFile.createNewFile();
+				
 				FileOutputStream fos = new FileOutputStream( newFile );
 				File[] file2 = file1.listFiles();
-		
+				value="";
 				for(int i=0; i<file2.length; i++) {
 					Tree_content g = new Tree_content( file2[i].getPath());
-					fos.write( g.output().getBytes() );
+					value += g.output();
+					fos.write( g.output().getBytes() );	
 				}
-			fos.close();	
+				fos.close();
+				
+				//更改新生成的文件名，要变成实质value的key
+				Gen_hash t = new Gen_hash();
+				key = t.hash(newFile.getPath());
+				File dest = new File(newFilePath + "\\" + key);
+				newFile.renameTo(dest);
+			
 			}	
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
+		catch (IOException e) {	
 			e.printStackTrace();
-		}  	
-		
+		}  		
 	}
 	
-	public  String getValue ( )  throws FileNotFoundException {
-		 File file = new File ( newFilePath + "\\"+ gross_key );
-		 try {
-			 Scanner fileInput = new Scanner (file); // 扫描读入的是新路径的文件的内容
-			 StringBuffer stringbuffer = new StringBuffer();
-			 while (fileInput.hasNextLine()) {
-				 stringbuffer.append( fileInput.nextLine()).append('\n');
-			 }
-			 fileInput.close();
-			 return stringbuffer.toString();
-		 }
-		 catch (Exception c) {
-			 System.out.println("key对应的文件不存在");
-			 return null;
-		 }
-		 
-	 }
 	
 	public String getFilePath() {
 		return filePath;
@@ -120,9 +114,10 @@ public class TeamTask2_new_version {
 	}
 	
 	public String getKey() {
-		return gross_key;
+		return key;
 	}
 	
-	
-
+	public  String getValue ( ) {
+		 return this.value;	
+	 }
 }

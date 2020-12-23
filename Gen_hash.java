@@ -1,6 +1,4 @@
 package test;
-
-
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.io.*;
@@ -9,7 +7,7 @@ import java.security.MessageDigest;
 
 public class Gen_hash{
 	/*
-		这是专门生成文件、文件夹的哈希码的函数
+		这是专门生成文件或文件夹的哈希码的函数
 	} */
 	
 	//1 返回blob的哈希值的“字符数组”表示
@@ -49,7 +47,7 @@ public class Gen_hash{
 	    	return strBuffer.toString();
 	}
 	 
-//3 path可以是文件夹（即目录tree），也可以是文件（blob), 返回值为目录或文件的哈希值	 
+	//3 path可以是文件夹（即目录tree），也可以是文件（blob), 返回值为目录或文件的哈希值	 
     public String hash( String path  ) { 
     	//三种情况：1，path直接是文件，2，文件夹里只有文件 3，文件夹里还有文件夹
     	 
