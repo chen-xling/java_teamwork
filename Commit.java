@@ -70,20 +70,15 @@ public class Commit {
 		this.last_tree_key = g.get_last_tree_key();
 		
 		if( !current_tree_key.equals(last_tree_key) )  {        //修改，是判断内容，而不是判断字符串的地址
-			File commit = new File(gitPath + "\\" + "temporary" );
+			this.value.append(this.current_tree_key);
+			this.value.append("\n");
+			this.value.append(this.head);
+			current_commit_key = t.hashString(value.toString());
+			File commit = new File (gitPath + "\\" + current_commit_key );
+			commit.createNewFile();
 			PrintWriter p = new PrintWriter (commit);
-			this.value.append( this.current_tree_key );
-			this.value.append( "\n" );
-			this.value.append( this.head );
-			//System.out.println(value.toString());
 			p.write( this.value.toString() );  
-			p.close();                 //这个输出流要及时关闭，否则会影响下面的文件改名操作！
-			
-			String newName = t.hash(commit.getPath());
-			File dest = new File ( gitPath + "\\" + newName );
-			boolean rename = commit.renameTo(dest);   //将最新的commit文件重命名为自身value的哈希值
-			
-			current_commit_key = dest.getName();
+			p.close();                            //输出流要及时关闭
 			g.update_head( current_commit_key );   //更新HEAD文件
 			
 		}

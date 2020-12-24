@@ -58,7 +58,7 @@ public class Tree {
 	private String key;
 	private String filePath;
 	private String newFilePath;
-	private String value;
+	private StringBuffer value;
 	
 	Tree(){};
 	Tree(String P1, String P2){
@@ -75,27 +75,23 @@ public class Tree {
 		try {
 			if( file1.isFile()) {
 				Blob b = new Blob( filePath, newFilePath );
-				value = b.getValue();
+				value.append( b.getValue() );
 			}
 			else if (file1.isDirectory()) {
-				File newFile = new File( newFilePath + "\\"+ "temp");   
-				newFile.createNewFile();
-				
-				FileOutputStream fos = new FileOutputStream( newFile );
 				File[] file2 = file1.listFiles();
-				value="";
+				value = new StringBuffer();
 				for(int i=0; i<file2.length; i++) {
 					Tree_content g = new Tree_content( file2[i].getPath());
-					value += g.output();
-					fos.write( g.output().getBytes() );	
+					value.append( g.output() );
 				}
-				fos.close();
 				
-				//更改新生成的文件名，要变成实质value的key
 				Gen_hash t = new Gen_hash();
-				key = t.hash(newFile.getPath());
-				File dest = new File(newFilePath + "\\" + key);
-				newFile.renameTo(dest);
+				key = t.hashString( value.toString() );
+				
+				File tree = new File( newFilePath + "\\" + key);
+				PrintWriter output = new PrintWriter( tree );
+				output.write( value.toString() );
+				output.close();
 			
 			}	
 		}
@@ -118,6 +114,6 @@ public class Tree {
 	}
 	
 	public  String getValue ( ) {
-		 return this.value;	
+		 return this.value.toString();	
 	 }
 }
