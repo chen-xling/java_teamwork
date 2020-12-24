@@ -90,6 +90,19 @@ public class Gen_hash{
 		}
 		
     }
+    
+    
+    public String hashString( String s)  {
+    	try {
+    		MessageDigest m = MessageDigest.getInstance("SHA-1");
+        	m.update( s.getBytes() );    //或许还可以设置一个缓冲区，不过这样直接转也行
+        	return convertToHexString( m.digest() );
+    	}
+    	catch( NoSuchAlgorithmException ex) {
+    		return "NoSuchAlgorithmException error!!";
+    	}
+    	
+    }
 
 }
 
