@@ -57,13 +57,13 @@ public class Tree {
 	
 	private String key;
 	private String filePath;
-	private String newFilePath;
+	private String objectPath;
 	private StringBuffer value;
 	
 	Tree(){};
 	Tree(String P1, String P2){
 		this.filePath = P1;
-		this.newFilePath = P2;
+		this.objectPath = P2;
 		gen_tree();
 		
 	};
@@ -71,24 +71,27 @@ public class Tree {
 	public void gen_tree() {
 		//分成两种情况，1.filePath是文件blob，2.filePath是文件夹
 		File file1 = new File( filePath );
- 
+		value = new StringBuffer();
 		try {
 			if( file1.isFile()) {
-				Blob b = new Blob( filePath, newFilePath );
+				Blob b = new Blob( filePath, "D:\\Ajava_object" );  //要把所有Blob文件都存起来, 供回滚使用
 				value.append( b.getValue() );
 			}
 			else if (file1.isDirectory()) {
 				File[] file2 = file1.listFiles();
-				value = new StringBuffer();
+				
 				for(int i=0; i<file2.length; i++) {
+					
 					Tree_content g = new Tree_content( file2[i].getPath());
 					value.append( g.output() );
+					
 				}
 				
 				Gen_hash t = new Gen_hash();
 				key = t.hashString( value.toString() );
 				
-				File tree = new File( newFilePath + "\\" + key);
+				File tree = new File( objectPath + "\\" + key );
+				tree.createNewFile();
 				PrintWriter output = new PrintWriter( tree );
 				output.write( value.toString() );
 				output.close();
@@ -106,7 +109,7 @@ public class Tree {
 	}
 	
 	public String getNewFilePath() {
-		return newFilePath;
+		return objectPath;
 	}
 	
 	public String getKey() {

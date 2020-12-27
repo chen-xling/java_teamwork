@@ -1,7 +1,7 @@
 package test;
-import java.util.*;
+
 import java.io.*;
-import java.security.MessageDigest;
+
 
 /* 小组任务一要实现：
 封装成一个类
@@ -12,12 +12,12 @@ import java.security.MessageDigest;
 数据域：
 	-原始文件的路径： filePath
 	-该文件的哈希值：key
-	-新的文件路径：newPath
+	-新的文件路径：gitPath
 	-文件的内容：value
 
 方法：
 	+1 getFilePath
-	+2 getNewPath
+	+2 getGitPath
 	+3 getKey
 	+4 给定value，向存储中添加对应的key-value的函数，也就是创建同样内容但文件名为key的新文件：addFile(String filePath)
 		返回值为key;其中调用了Gen_hash类中的hash函数
@@ -32,15 +32,15 @@ import java.security.MessageDigest;
 public class Blob {
 	
 	private String filePath;   
-	private  String newPath;
+	private  String objectPath;
 	private  String key;
 	
-	Blob(){};
+
 	//构造函数，输入原始路径名，和想要放进文件的新路径名。
 	//由构造函数，便可完成把原始路径对应的Blob, “拷贝”进新路径里
-	Blob( String filePath, String newPath) throws IOException{
+	Blob( String filePath, String objectPath) throws IOException{
 		this.filePath = filePath;
-		this.newPath  = newPath;
+		this.objectPath  = objectPath;
 		key = addFile( );   //在这个函数里，会往新路径里写入文件内容
 	}
 	
@@ -48,8 +48,8 @@ public class Blob {
 		return filePath;
 	}
 	
-	public String getNewPath() {
-		return newPath;
+	public String getGitPath() {
+		return objectPath;
 	}
 	
 	public String getKey() {
@@ -60,8 +60,8 @@ public class Blob {
 	 public  String addFile() throws IOException{
 		 Gen_hash t = new Gen_hash();
 		 this.key = t.hash (filePath);
-		 File newFile = new File( newPath + "\\"+ key);   //括号中的是新的文件路径名
-		 newFile.createNewFile();
+		 File newFile = new File( objectPath + "\\"+ key);   //括号中的是新的文件路径名
+		 newFile.createNewFile();   //如果已有同名文件则会直接覆盖
 		
 		 FileInputStream fileis = new FileInputStream(filePath);
 		 FileOutputStream fileos = new FileOutputStream(newFile);
@@ -84,10 +84,10 @@ public class Blob {
 		 return key;
 	 }
 	 
-	//	+5 给定key，调用GetValue类，查找对应的value,返回的是文件夹key里的字符串形式的全部内容：getValue(String key)	
-	 public  String getValue ( ) throws FileNotFoundException {
+	//	+5 给定key，调用GetValue类，查找对应的value。返回的是文件夹key里的字符串形式的全部内容：getValue( )	
+	 public  String getValue ( ) throws FileNotFoundException  {
 		 GetValue t = new GetValue();
-		 return t.getValue( newPath +"//"+key );
+		 return t.getValue( objectPath +"//" + key );
 		
 	 }
 	 

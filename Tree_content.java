@@ -16,20 +16,33 @@ package test;
  */
 
 import java.io.File;
+import java.io.IOException;
 public class Tree_content {
 	private String name;
 	private String key;
 	private String type;
 	
-	Tree_content(String f ) {    //传入的是P1的子文件路径， file2[i].getPath()
+	Tree_content(String f ) throws IOException {    //传入的是P1的子文件路径， file2[i].getPath()
 		File file = new File(f);
 		name = file.getName();
 		Gen_hash t = new Gen_hash();
-		key = t.hash(f);
-		if(file.isFile()) 
+		
+		if(file.isFile()) {
 			type = "Blob";
-		else if (file.isDirectory())
+			key = t.hash(f);
+			 new Blob( file.getPath(), "D:\\Ajava_object" );   //要把所有Blob文件都存起来, 供回滚使用
+				                 
+		}
+			
+		
+		else if (file.isDirectory()) {
 			type = "Tree";
+			Tree tree = new Tree( f, "D:\\Ajava_object" );            //要把所有Tree文件都存起来, 供回滚使用
+			String treeValue =tree.getValue();
+			key = t.hashString(  treeValue );
+		}
+			
+		
 	}
 	
 	public String output() {
