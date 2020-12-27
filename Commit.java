@@ -34,6 +34,7 @@ import java.io.*;
  *+构造函数Commit(path1, path2)：调用构造函数，即可完成主要操作
  *+gen_commit()：被构造函数调用
  *+getValue():   获得本次commit的value
+ *+get_all_commit(): 返回历史所有commit的哈希值，供回滚时使用
  * 
  * 
  * //原本我想的是使用静态变量count来计数，当它为0时，没有提交过。
@@ -57,13 +58,15 @@ public class Commit {
 	Commit(String  path1, String path2 ) throws IOException{
 		Commit.filePath = path1;
 		Commit.gitPath = path2;
-		new Tree( path1, path2 );   //任务二，由工作区目录生成一个Tree文件，记录工作区的内容
+		
 		gen_commit();
 	}
 	
 	public void gen_commit() throws IOException {
 		Gen_hash t = new Gen_hash();     //调用Gen_hash获得文件哈希值
-		this.current_tree_key = t.hash(filePath);   //生成本次要提交的文件夹的哈希值
+		Tree tree = new Tree( filePath, "D:\\Ajava_object" );   //工作区目录的所有新的Tree和Blob都要存在同一个Object文件夹中。
+		
+		this.current_tree_key = t.hashString( tree.getValue() );   //生成本次要提交的文件夹的哈希值
 		
 		HEAD g = new HEAD();            //调用HEAD类，获得之前最新的commit有关信息
 		this.head = g.head;
@@ -90,6 +93,19 @@ public class Commit {
 	
 	public String getValue() {
 		return this.value.toString();
+	}
+	
+	public String get_all_commit() {      //返回历史所有commit的哈希值，供回滚时使用
+		GetValue temp = new GetValue();
+		String all_commit = null;
+		try {
+			all_commit = temp.getValue( gitPath + "\\" + "HEAD" );
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return all_commit;
 	}
 	
 
