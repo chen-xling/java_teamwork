@@ -38,7 +38,7 @@ public class Blob {
 
 	//构造函数，输入原始路径名，和想要放进文件的新路径名。
 	//由构造函数，便可完成把原始路径对应的Blob, “拷贝”进新路径里
-	Blob( String filePath, String objectPath) throws IOException{
+	public Blob( String filePath, String objectPath) throws IOException{
 		this.filePath = filePath;
 		this.objectPath  = objectPath;
 		key = addFile( );   //在这个函数里，会往新路径里写入文件内容
@@ -48,7 +48,7 @@ public class Blob {
 		return filePath;
 	}
 	
-	public String getGitPath() {
+	public String getObjectPath() {
 		return objectPath;
 	}
 	
@@ -61,26 +61,28 @@ public class Blob {
 		 Gen_hash t = new Gen_hash();
 		 this.key = t.hash (filePath);
 		 File newFile = new File( objectPath + "\\"+ key);   //括号中的是新的文件路径名
-		 newFile.createNewFile();   //如果已有同名文件则会直接覆盖
-		
-		 FileInputStream fileis = new FileInputStream(filePath);
-		 FileOutputStream fileos = new FileOutputStream(newFile);
 		 
-		 byte[] buffer = new byte[1024];  //定义一个字节缓冲区
-		 int numRead = 0;
-		 
-		 do {
-			 numRead = fileis.read(buffer);
-			 if( numRead > 0 ) {
-				fileos.write(buffer, 0, numRead); 
-				 
-			 }
-		 } while ( numRead != -1);
-		 
-		fileis.close();
-		fileos.close();
-		 
-		 
+		 if( !newFile.exists() ) {          //如果已有同名文件则不会再生成。
+			 newFile.createNewFile();   
+				
+			 FileInputStream fileis = new FileInputStream(filePath);
+			 FileOutputStream fileos = new FileOutputStream(newFile);
+			 
+			 byte[] buffer = new byte[1024];  //定义一个字节缓冲区
+			 int numRead = 0;
+			 
+			 do {
+				 numRead = fileis.read(buffer);
+				 if( numRead > 0 ) {
+					fileos.write(buffer, 0, numRead); 
+					 
+				 }
+			 } while ( numRead != -1);
+			 
+			fileis.close();
+			fileos.close(); 
+		 }
+		 	 
 		 return key;
 	 }
 	 

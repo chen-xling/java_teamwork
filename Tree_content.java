@@ -12,7 +12,8 @@ package test;
  * 		+String getName();
  * 		+String getKey();
  * 		+String getType();
- * 
+ * 		+void get_tree_content( String line)   //传入的内容形式为Tree文件中的一行 
+ * 				//供回滚使用，得到tree的每一行的内容信息
  */
 
 import java.io.File;
@@ -21,7 +22,10 @@ public class Tree_content {
 	private String name;
 	private String key;
 	private String type;
+	static String objectPath = "D:\\AsimpleGit\\object";      //定义成字符串常量，方便修改，包私有
 	
+	
+	Tree_content(){};
 	Tree_content(String f ) throws IOException {    //传入的是P1的子文件路径， file2[i].getPath()
 		File file = new File(f);
 		name = file.getName();
@@ -30,19 +34,17 @@ public class Tree_content {
 		if(file.isFile()) {
 			type = "Blob";
 			key = t.hash(f);
-			 new Blob( file.getPath(), "D:\\Ajava_object" );   //要把所有Blob文件都存起来, 供回滚使用
+			 new Blob( file.getPath(), objectPath );   //要把所有Blob文件都存起来, 供回滚使用
 				                 
 		}
 			
 		
 		else if (file.isDirectory()) {
 			type = "Tree";
-			Tree tree = new Tree( f, "D:\\Ajava_object" );            //要把所有Tree文件都存起来, 供回滚使用
+			Tree tree = new Tree( f, objectPath );            //要把所有Tree文件都存起来, 供回滚使用
 			String treeValue =tree.getValue();
 			key = t.hashString(  treeValue );
-		}
-			
-		
+		}	
 	}
 	
 	public String output() {
@@ -64,5 +66,12 @@ public class Tree_content {
 	public String getKey() {
 		return this.key;
 	}
+	
+	public void get_tree_content( String line) {  //传入的内容形式为Tree文件中的一行  
+		this.type = line.substring(0,4);
+		this.key = line.substring(5,45);
+		this.name = line.substring(46);	
+	}     //供回滚使用，得到tree的每一行的内容信息
+	
 
 }
