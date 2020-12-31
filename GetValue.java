@@ -19,7 +19,10 @@ public class GetValue {
 			 do {
 				 numRead = fileis.read(buffer);
 				 if( numRead > 0 ) {
-					 stringbuffer.append( new String(buffer) );  //一定要注意，字符数组没有toString方法
+					 stringbuffer.append( new String(buffer) ,0, numRead );  //注意事项一！字符数组没有toString方法
+					 //stringbuffer.append( new String(buffer)  );     //注意事项二！如果写成这样，读取的末尾会有很多空格
+					 /*注意事项三，append( new String(buffer) ,0, numRead )这种方法中，如果文件内容中带有中文，读取到的文件末尾仍然会有7到13个空格。
+						我还没有想明白这个。但是改用Scanner(File)中的input.hasNextLine方法就没有这些奇怪的问题*/
 				 }
 			 } while ( numRead != -1);
 			fileis.close(); 
