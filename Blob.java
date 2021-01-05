@@ -1,7 +1,5 @@
 package test;
-
 import java.io.*;
-
 
 /* 小组任务一要实现：
 封装成一个类
@@ -31,7 +29,7 @@ import java.io.*;
 
 public class Blob {
 	
-	private String filePath;   
+	private String filePath;    // filePath一定是一个文件路径，而不是一个文件夹路径
 	private  String objectPath;
 	private  String key;
 	

@@ -6,23 +6,31 @@ import java.util.Scanner;
 //要建立一个存储最新HEAD的文件，否则commit记录只停留在内存中，下次无法找到
 public class HEAD {
 
-	private static String gitPath;
+	private String gitPath = Global.gitPath;;
 	private File head_file;
 	public String head;
+	public String save_current_branch_file = Global.save_current_branch_file;  //该文件用于存放当前分支名
 	
 	HEAD() throws FileNotFoundException{
-		gitPath = Commit.gitPath;
+		
 		this.head_file = new File(gitPath + "\\" + "HEAD");
 		this.head = get_head();
 	}
 	
 	public void update_head ( String commit ) throws IOException {
-		if( !head_file.exists() ) {
+		if( !head_file.exists() ) {  
+			//如果HEAD.txt文件不存在，说明是正在初始化仓库，同时进行第一次commit，默认分支为主分支
 			head_file.createNewFile();
 			PrintWriter output = new PrintWriter(head_file);
 			output.print( commit );        
 			output.close();
 			System.out.println("Commit成功，HEAD文件已建立。");
+			
+			File save = new File( save_current_branch_file );  //默认分支为主分支，写入current_branch.txt
+			PrintWriter out = new PrintWriter( save);
+			out.write( "mainCommitPath" );
+			out.close();
+			System.out.println("当前分支是main分支。");
 		}
 		else {
 			commit = "\n" + commit;

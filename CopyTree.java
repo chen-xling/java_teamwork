@@ -8,7 +8,7 @@ import java.io.IOException;
 public class CopyTree {
 	
 	    //filePath是原文件夹的路径名
-	    //goalPath是新文件夹的路径名      //传入之前，文件夹已存在，最好是空文件夹
+	    //goalPath是新文件夹的路径名      //传入之前，文件夹已存在，最好是空文件夹，但没有强制要求
 	CopyTree( String filePath, String goalPath ) throws IOException{
 		gen_file(filePath, goalPath);	
 	}
@@ -17,8 +17,6 @@ public class CopyTree {
 	public void gen_file( String filePath, String goalPath) throws IOException {
 		File file = new File (filePath);
 		File[] fileList = file.listFiles();
-		
-		System.out.println(fileList.length);
 		
 		for( int i=0; i<fileList.length; i++) {
 			if( fileList[i].isFile() )
