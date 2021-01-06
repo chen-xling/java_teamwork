@@ -1,7 +1,5 @@
 # SimpleGit详细代码设计文档
 
-[toc]
-
 ## 1. Gen_hash类
 
 + 数据域
@@ -336,27 +334,32 @@
 ## 11. Branch类
 
 + 数据域
-  + (-)String **newBranchName**：新的分支名
-  + (+)String **save_current_branch_file** = "D:\\AsimpleGit\\current_branch.txt" ：用于存放当前分支名的文件
-  + (+)String **branches** = "D:\\AsimpleGit\\branches"：用于存放所有分支文件夹，包括主分支的文件夹路径
+  + (#)String **current_branch**：当前分支的名字
+  + (#)String **current_branch_path**：当前分支的文件夹路径
+  + (#)String **latest_commit**：最新的commit文件名（其哈希值）
   
 + 构造函数
-  + **NewBranch**( String newBranchName)
-    + 功能：通过输入新的分支名创建新分支的实例
+  + **Branch**()
+    + 功能：得到当前分支的名字，以及它的文件夹路径
+    + 参数：无
+  + **Branch**( String newBranchName )
+    + 功能：得到当前分支的名字，以及它的文件夹路径
     + 参数：字符串-新的分支名
   
 + 提供方法
-  + void **gen_branch**()
-    + 功能：创建新的分支文件夹，用来放该分支的commit文件
-    + 参数：无
+  + void **gen_branch**(String newBranchName)
+    + 功能：创建新的分支文件夹，用来放该分支的commit文件，并把当前Branch文件夹的全部commit文件复制到新的Branch文件夹下面
+    + 参数：字符串-新的分支名
     + 返回值 ：无
 
-
-
-+ void **change_branch**( String branch_name )
++ void **change_branch**(String branch_name)
   + 功能：用于切换分支，往current_commit.txt文件内写入新的分支名，覆盖原有的内容。
   + 参数：字符串-分支名
   + 返回值：无
++  String listBranch () 
+  + 功能：返回当前的所有分支名字
+  + 参数：无
+  + 返回值：字符串-所有的分支名
 
 
 
@@ -411,13 +414,25 @@
 
 ## 13. Command类
 
-
-
-
++ main函数
+  + 功能：从命令行中读取git命令
+    + 输入"initial / commit / history / rollback / checkout / branch"，实现对应功能
+    + 否则，输出“Sorry, this is not a git command. Try again.”
 
 ## 14. Global.java
 
 ​	所有blob、 tree、 commit文件和HEAD文件、保存当前分支的文件，其存放路径都定义在Global.java这个文件类中，且定义为静态变量（全局）。
 ​	注意，这些路径如果用代码更改了，都是只停留在内存中的，上次退出时停留在哪个分支是不会记得的
-​		
+
++ 数据域
+  + (#)String **filePath** = "D:\\Users\\chenxling\\Pictures\\py图"：工作区目录
+  + (#)String **objectPath** = "D:\\AsimpleGit\\object"：存放所有blob、 tree文件的目录
+  + (#)String **save_current_branch_file** = "D:\\AsimpleGit\\current_branch.txt"：用于存放当前分支名
+  + (#)String **branches** = "D:\\AsimpleGit\\branches"：该文件夹用于存放所有分支文件夹，包括主分支
+  + (#)String **current_branch**：当前分支名
+  + (#)String **gitPath**：存放commit文件的目录
++ 构造函数
+  + **Global**()
+    + 功能：初始化，从文件中读取当前分支；得到当前分支的名字，以及它的文件夹路径
+    + 参数：无
 
