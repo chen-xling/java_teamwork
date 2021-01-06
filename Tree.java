@@ -56,43 +56,50 @@ import java.io.*;
 public class Tree {
 	
 	private String key;
-	private String filePath;
-	private String newFilePath;
+	private String filePath;    //一般来说，filePath应该是一个文件夹路径，而不是文件路径
+	protected static String objectPath;
 	private StringBuffer value;
 	
-	Tree(){};
-	Tree(String P1, String P2){
-		this.filePath = P1;
-		this.newFilePath = P2;
+	public Tree() {}
+	public Tree(String P1, String P2){
+		filePath = P1;
+		objectPath = P2;
 		gen_tree();
 		
-	};
+	}
 	
 	public void gen_tree() {
-		//分成两种情况，1.filePath是文件blob，2.filePath是文件夹
+		//分成两种情况，1.filePath是文件，2.filePath是文件夹
 		File file1 = new File( filePath );
- 
+		value = new StringBuffer();
 		try {
 			if( file1.isFile()) {
-				Blob b = new Blob( filePath, newFilePath );
+				Blob b = new Blob( filePath, objectPath );
 				value.append( b.getValue() );
 			}
 			else if (file1.isDirectory()) {
 				File[] file2 = file1.listFiles();
-				value = new StringBuffer();
+				
 				for(int i=0; i<file2.length; i++) {
 					Tree_content g = new Tree_content( file2[i].getPath());
+					if( i!=0 ) 
+						value.append("\n");
 					value.append( g.output() );
+					
+					
 				}
 				
 				Gen_hash t = new Gen_hash();
 				key = t.hashString( value.toString() );
 				
-				File tree = new File( newFilePath + "\\" + key);
-				PrintWriter output = new PrintWriter( tree );
-				output.write( value.toString() );
-				output.close();
-			
+				File tree = new File( objectPath + "\\" + key );
+				
+				if ( !tree.exists() ) {       //如果相同的tree文件已经存在，则不会再生成
+					tree.createNewFile();
+					PrintWriter output = new PrintWriter( tree );
+					output.write( value.toString() );
+					output.close();
+				}
 			}	
 		}
 		catch (IOException e) {	
@@ -105,15 +112,16 @@ public class Tree {
 		return filePath;
 	}
 	
-	public String getNewFilePath() {
-		return newFilePath;
+	public String getObjectPath() {
+		return objectPath;
 	}
 	
 	public String getKey() {
 		return key;
 	}
 	
-	public  String getValue ( ) {
-		 return this.value.toString();	
+	public  String getValue ( ) throws FileNotFoundException {
+		 GetValue t = new GetValue();
+		 return t.getValue( objectPath +"//" + key );
 	 }
 }

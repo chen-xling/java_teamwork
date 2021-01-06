@@ -9,16 +9,17 @@ import java.io.*;
 	2. 给定key，查找得到对应的value值
 */
 
-public class test_teamtask1 {
+public class Test_Blob {
 
 	public static void main(String[] args)throws IOException, Exception  {
 		String filePath = "C:\\Users\\chenxling\\Desktop\\workspace\\Java课程作业\\Charpter6_4.java";
-        String newPath = "D:\\Ayingyong5_test";
-		Blob teamtask1 = new Blob( filePath, newPath );  //调用已经写好的TeamTask1类 
+		//String filePath = "C:\\Users\\chenxling\\Desktop\\workspace\\做实验的空文件.txt";  //测试空文件
+        String gitPath = "D:\\AsimpleGit\\object";
+		Blob teamtask1 = new Blob( filePath, gitPath );  //调用已经写好的TeamTask1类 
 		
 		
 		System.out.println("原始路径名为： " + teamtask1.getFilePath() );
-		System.out.println("新的路径名为： " + teamtask1.getNewPath() );
+		System.out.println("新的路径名为： " + teamtask1.getObjectPath() );
 		System.out.println("该文件的key为： " + teamtask1.getKey() );
 		System.out.println("给定key值，查找到文件的内容为：\n" +  teamtask1.getValue() );
 		

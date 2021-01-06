@@ -25,8 +25,10 @@
     -   包含根目录tree对象的key
 
     -   包含前一次commit的key
+    
+    -   commit的说明信息、作者信息、时间等一些额外信息
 
-    -   以上两行构成本次commit的value，本次commit的key就是以上两行内容的哈希.
+    -   以上三行构成本次commit的value，本次commit的key就是以上三行内容的哈希.
 
 -   存储当前版本的指针HEAD:保存一个HEAD文件，其中的内容为最后一次commit对象的地址。
 
