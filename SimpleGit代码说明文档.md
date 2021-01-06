@@ -333,7 +333,7 @@
 
 
 
-## 11. NewBranch类
+## 11. Branch类
 
 + 数据域
   + (-)String **newBranchName**：新的分支名
@@ -348,12 +348,19 @@
 + 提供方法
   + void **gen_branch**()
     + 功能：创建新的分支文件夹，用来放该分支的commit文件
-    
     + 参数：无
-    
-    + 返回值 ：无 
-    
-      
+    + 返回值 ：无
+
+
+
++ void **change_branch**( String branch_name )
+  + 功能：用于切换分支，往current_commit.txt文件内写入新的分支名，覆盖原有的内容。
+  + 参数：字符串-分支名
+  + 返回值：无
+
+
+
+
 
 ## 12. CopyTree类
 
@@ -367,17 +374,6 @@
     + 功能：复制文件夹的全部内容
     + 参数：字符串-原文件夹路径；字符串-新文件夹路径
     + 返回值：无
-
-
-
-## 13. Checkout类
-
-用于切换分支
-
-+ void **change_branch**( String branch_name )
-  + 功能：往current_commit.txt文件内写入新的分支名，覆盖原有的内容。
-  + 参数：字符串-分支名
-  + 返回值：无
 
 
 
@@ -413,5 +409,15 @@
 
 
 
-## 14. Command类
+## 13. Command类
+
+
+
+
+
+## 14. Global.java
+
+​	所有blob、 tree、 commit文件和HEAD文件、保存当前分支的文件，其存放路径都定义在Global.java这个文件类中，且定义为静态变量（全局）。
+​	注意，这些路径如果用代码更改了，都是只停留在内存中的，上次退出时停留在哪个分支是不会记得的
+​		
 
