@@ -58,7 +58,8 @@ public class Branch {
 		 
 	
 		//把当前Branch文件夹的全部commit文件复制到新的Branch文件夹下面
-		new CopyTree( current_branch_path, branch_file.getPath());    	
+		new CopyTree( current_branch_path, branch_file.getPath());   
+		System.out.println("新建分支成功！");
 	}
 	
 	

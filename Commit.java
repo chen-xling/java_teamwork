@@ -51,10 +51,18 @@ public class Commit {
 	private String last_tree_key;         //上一次commit的tree key
 	private String current_commit_key;     //新生成的commit文件的文件名
 	private StringBuffer value = new StringBuffer();    //本次commit文件的内容
+	protected String objectPath;
 	
+	//该无参构造函数，默认提交路径为当前分支
+	Commit() throws IOException{  
+		Global g  = new Global();   //初始化全局变量，得到当前分支
+		this.filePath = Global.filePath;
+		this.gitPath = Global.gitPath;
+		this.objectPath = Global.objectPath;
+		gen_commit();
+	};  
 	
-	Commit(){};  //可以用默认的filePath和gitPath
-	
+	//少用这种构造函数
 	Commit(String  path1, String gitPath ) throws IOException{
 		this.filePath = path1;
 		this.gitPath = gitPath;
@@ -63,11 +71,10 @@ public class Commit {
 	
 	public void gen_commit() throws IOException {
 		Gen_hash t = new Gen_hash();     //调用Gen_hash获得文件哈希值
-		Tree tree = new Tree( filePath, Global.objectPath );   //工作区目录的所有新的Tree和Blob都要存在同一个Object文件夹中。
+		Tree tree = new Tree( filePath, objectPath );   //工作区目录的所有新的Tree和Blob都要存在同一个Object文件夹中。
 	
 		this.current_tree_key = t.hashString( tree.getValue() );   //生成本次要提交的文件夹的哈希值
 	
-		
 		
 		HEAD g = new HEAD();            //调用HEAD类，获得之前最新的commit有关信息
 		this.head = g.head;
@@ -96,15 +103,12 @@ public class Commit {
 		return this.value.toString();
 	}
 	
-	//返回历史所有commit的哈希值，供回滚时使用
+	//返回当前分支下所有历史commit的哈希值，供回滚时使用
 	public String get_all_commit() throws FileNotFoundException { 
 		
-		//得到当前分支Branch的文件夹路径
 		GetValue t = new GetValue();
-		String current_branch_path = Global.branches + "\\" + t.getValue( Global.save_current_branch_file );
-		
 		//得到当前分支下的HEAD文件内容
-		String all_commit = t.getValue( current_branch_path + "\\" + "HEAD" );
+		String all_commit = t.getValue( gitPath + "\\" + "HEAD" );
 		return all_commit;
 	}
 	

@@ -6,14 +6,17 @@ import java.util.Scanner;
 //要建立一个存储最新HEAD的文件，否则commit记录只停留在内存中，下次无法找到
 public class HEAD {
 
-	private String gitPath = Global.gitPath;;
+	private String gitPath;
 	private File head_file;
-	public String head;
+	protected String head;       				//最新的commit文件名（其哈希值）
 	public String save_current_branch_file = Global.save_current_branch_file;  //该文件用于存放当前分支名
 	
 	HEAD() throws FileNotFoundException{
-		
+	
+		Global g = new Global();   //要初始化
+		this.gitPath = Global.branches + "\\"+  Global.current_branch;
 		this.head_file = new File(gitPath + "\\" + "HEAD");
+		
 		this.head = get_head();
 	}
 	
@@ -41,6 +44,7 @@ public class HEAD {
 		}
 	}
 	
+	//返回当前分支的最新Commit名字
 	public String get_head() throws FileNotFoundException {
 		if( !head_file.exists() ) {
 			return null;
@@ -58,6 +62,8 @@ public class HEAD {
 		}
 	}
 	
+	
+	//返回当前分支的最新Commit所对应的Tree文件的哈希值（文件名）
 	public String get_last_tree_key() throws FileNotFoundException {
 		if( !this.head_file.exists() )
 			return null;
