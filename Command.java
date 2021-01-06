@@ -25,13 +25,16 @@ import java.io.IOException;
 
 public class Command {
 
+	//从命令行中读取git命令
 	public static void main(String[] args) throws IOException {
-		while(true) {
+		//while(true) {
 			if( args[0].equals("git") ) {
 				String command = args[1];
+				
 				switch(command){
 					case "initial":
-						
+						String path = args[2];
+						break;
 					case "commit":
 						new Commit( Global.filePath, Global.gitPath );
 						break;
@@ -41,12 +44,21 @@ public class Command {
 						break;
 						
 					case "rollback":
-						
+						String oldCommit = args[2];
+						new RollBack(oldCommit);
+						break;
 					case "checkout":
-					
+						String BranchName = args[2];
+						Branch b = new Branch();
+						b.change_branch(BranchName);
+						break;
 					case "branch":
-						
-					
+						String new_branch_name = args[2];
+						new Branch(new_branch_name);
+						break;
+					default:
+						System.out.println("Sorry, this is not a git command. Try again.");
+								
 				}
 				
 				
@@ -55,7 +67,7 @@ public class Command {
 				System.out.println("Sorry, this is not a git command. Try again.");
 			}
 			
-		}
+		//}
 		
 		
 		
