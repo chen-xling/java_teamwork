@@ -9,7 +9,7 @@ import java.util.Scanner;
  *再根据tree里面的内容，一一把文件复制到目标路径(先清空目标路径下的文件）：
  *	子文件若是blob, 就根据它的哈希码，去存放object的路径下找到它，然后复制到目标路径
  *	子文件若是Tree, 就在目标路径下新建一个子文件夹；并且根据它的哈希码，去存放object的路径下找到相应Tree文件，递归。
- *2.在回滚之前，新建一个分支，用于之后的往后回滚。
+ *2.在回滚之前，新建一个分支，用于之后的往后回滚。新的分支名就是当前分支最新的commit哈希值
  *3.更新HEAD文件，恢复到相应的历史状态
  *
  */
@@ -34,10 +34,11 @@ public class RollBack {
 	RollBack( String old_commit ) throws IOException {
 		
 		//得到当前分支Branch的文件夹路径
-		GetValue t = new GetValue();
-		current_branch_path = Global.branches + "\\" + t.getValue( Global.save_current_branch_file );
+		Global g = new Global();
+		current_branch_path = Global.gitPath;
 		
-		//得到old_commit的treeKey
+		
+	
 		File file1 = new File(  current_branch_path + "\\" + old_commit );
 		Scanner input1 = new Scanner( file1 );
 		treeKey = input1.nextLine();

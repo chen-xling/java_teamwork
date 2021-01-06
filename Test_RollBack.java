@@ -16,8 +16,8 @@ public class Test_RollBack {
 		System.out.println(s3);
 		
  */
-		String commit = "941fe113ebaf985dd80914da19c41e7e6b59bcca";   //这个是指要回到历史哪个commit
-		new RollBack( commit);
+		String commit = "44a8e82088da624a9f4123fcafd4b310135db178";   //这个是指要回到历史哪个commit
+		new RollBack( commit );
 		
 		
 		
