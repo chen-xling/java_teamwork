@@ -27,13 +27,12 @@ public class Command {
 
 	//从命令行中读取git命令
 	public static void main(String[] args) throws IOException {
-		//while(true) {
 			if( args[0].equals("git") ) {
 				String command = args[1];
 				
 				switch(command){
 					case "initial":
-						String path = args[2];
+						String path = args[2];   //还未完成初始化命令
 						break;
 					case "commit":
 						new Commit( Global.filePath, Global.gitPath );
@@ -41,8 +40,7 @@ public class Command {
 					case "history":
 						Commit t = new Commit();
 						System.out.println( t.get_all_commit() );
-						break;
-						
+						break;		
 					case "rollback":
 						String oldCommit = args[2];
 						new RollBack(oldCommit);
@@ -66,8 +64,6 @@ public class Command {
 			else {
 				System.out.println("Sorry, this is not a git command. Try again.");
 			}
-			
-		//}
 		
 		
 		

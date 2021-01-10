@@ -7,7 +7,7 @@ public class Test_Tree   {
 	public static void main(String[] args) throws IOException, Exception {
 		String filePath = "D:\\Users\\chenxling\\Pictures\\py图";
 		//String filePath = "C:\\Users\\chenxling\\Desktop\\workspace\\Java课程作业";
-	    String objectPath = Tree_content.objectPath;
+	    String objectPath = Global.objectPath;
 		Tree  temp = new Tree( filePath, objectPath );  
 				
 		System.out.println("原始路径名为： " + temp.getFilePath() );

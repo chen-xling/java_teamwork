@@ -91,7 +91,7 @@ public class Gen_hash{
 		
     }
     
-    
+    //4 hashString函数用于返回字符串的哈希值
     public String hashString( String s)  {
     	try {
     		MessageDigest m = MessageDigest.getInstance("SHA-1");
