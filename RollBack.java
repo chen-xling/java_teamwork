@@ -3,24 +3,24 @@ package test;
 import java.io.*;
 import java.util.Scanner;
 
-/*ÊµÏÖ»Ø¹ö¹¦ÄÜ
- *1.ÆäÊµ£¬¾ÍÊÇ¸ù¾İÒ»¸ö°æ±¾ºÅ£¨Ò²¾ÍÊÇÄ³´ÎcommitµÄÎÄ¼şÃû£© ¶ÁÈ¡¸ÃÎÄ¼şËüµÄµÚÒ»ĞĞ£¬
- *¾ÍµÃµ½ÁËÄÇ´ÎcommitËùÌá½»µÄÕû¸ö´óÎÄ¼ş¼ĞµÄtree
- *ÔÙ¸ù¾İtreeÀïÃæµÄÄÚÈİ£¬Ò»Ò»°ÑÎÄ¼ş¸´ÖÆµ½Ä¿±êÂ·¾¶(ÏÈÇå¿ÕÄ¿±êÂ·¾¶ÏÂµÄÎÄ¼ş£©£º
- *	×ÓÎÄ¼şÈôÊÇblob, ¾Í¸ù¾İËüµÄ¹şÏ£Âë£¬È¥´æ·ÅobjectµÄÂ·¾¶ÏÂÕÒµ½Ëü£¬È»ºó¸´ÖÆµ½Ä¿±êÂ·¾¶
- *	×ÓÎÄ¼şÈôÊÇTree, ¾ÍÔÚÄ¿±êÂ·¾¶ÏÂĞÂ½¨Ò»¸ö×ÓÎÄ¼ş¼Ğ£»²¢ÇÒ¸ù¾İËüµÄ¹şÏ£Âë£¬È¥´æ·ÅobjectµÄÂ·¾¶ÏÂÕÒµ½ÏàÓ¦TreeÎÄ¼ş£¬µİ¹é¡£
- *2.ÔÚ»Ø¹öÖ®Ç°£¬ĞÂ½¨Ò»¸ö·ÖÖ§£¬ÓÃÓÚÖ®ºóµÄÍùºó»Ø¹ö¡£ĞÂµÄ·ÖÖ§Ãû¾ÍÊÇµ±Ç°·ÖÖ§×îĞÂµÄcommit¹şÏ£Öµ
- *3.¸üĞÂHEADÎÄ¼ş£¬»Ö¸´µ½ÏàÓ¦µÄÀúÊ·×´Ì¬
+/*å®ç°å›æ»šåŠŸèƒ½
+ *1.å…¶å®ï¼Œå°±æ˜¯æ ¹æ®ä¸€ä¸ªç‰ˆæœ¬å·ï¼ˆä¹Ÿå°±æ˜¯æŸæ¬¡commitçš„æ–‡ä»¶åï¼‰ è¯»å–è¯¥æ–‡ä»¶å®ƒçš„ç¬¬ä¸€è¡Œï¼Œ
+ *å°±å¾—åˆ°äº†é‚£æ¬¡commitæ‰€æäº¤çš„æ•´ä¸ªå¤§æ–‡ä»¶å¤¹çš„tree
+ *å†æ ¹æ®treeé‡Œé¢çš„å†…å®¹ï¼Œä¸€ä¸€æŠŠæ–‡ä»¶å¤åˆ¶åˆ°ç›®æ ‡è·¯å¾„(å…ˆæ¸…ç©ºç›®æ ‡è·¯å¾„ä¸‹çš„æ–‡ä»¶ï¼‰ï¼š
+ *	å­æ–‡ä»¶è‹¥æ˜¯blob, å°±æ ¹æ®å®ƒçš„å“ˆå¸Œç ï¼Œå»å­˜æ”¾objectçš„è·¯å¾„ä¸‹æ‰¾åˆ°å®ƒï¼Œç„¶åå¤åˆ¶åˆ°ç›®æ ‡è·¯å¾„
+ *	å­æ–‡ä»¶è‹¥æ˜¯Tree, å°±åœ¨ç›®æ ‡è·¯å¾„ä¸‹æ–°å»ºä¸€ä¸ªå­æ–‡ä»¶å¤¹ï¼›å¹¶ä¸”æ ¹æ®å®ƒçš„å“ˆå¸Œç ï¼Œå»å­˜æ”¾objectçš„è·¯å¾„ä¸‹æ‰¾åˆ°ç›¸åº”Treeæ–‡ä»¶ï¼Œé€’å½’ã€‚
+ *2.åœ¨å›æ»šä¹‹å‰ï¼Œæ–°å»ºä¸€ä¸ªåˆ†æ”¯ï¼Œç”¨äºä¹‹åçš„å¾€åå›æ»šã€‚æ–°çš„åˆ†æ”¯åå°±æ˜¯å½“å‰åˆ†æ”¯æœ€æ–°çš„commitå“ˆå¸Œå€¼
+ *3.æ›´æ–°HEADæ–‡ä»¶ï¼Œæ¢å¤åˆ°ç›¸åº”çš„å†å²çŠ¶æ€
  *
  */
 
-/*½âÊÍÒ»ÏÂobjectÂ·¾¶£º
- * 	¶ÔÓÚµÚÒ»´Îcommit, °ÑËùÓĞµÄtreeºÍblob´æµ½Õâ¸öÂ·¾¶ÏÂ¡£
- * 		Èç¹ûÊÇ²»Í¬ÎÄ¼şÃû£¬µ«ÄÚÈİÍêÈ«ÏàÍ¬µÄ×ÓÎÄ¼ş£¬Ö»»á±£´æÒ»¸öblob£¬¶ø²»ÊÇÁ½¸ö¡£
- * 	¶ÔÓÚµÚ¶ş´Îcommit£º
- * 		Èç¹ûÄ³Ğ©¾ÉÎÄ¼ş¸Ä¶¯ÁË£¬Ôò»áÔÚ¸ÃobjectÂ·¾¶ÏÂĞÂÔöÏàÓ¦µÄtreeºÍblob£¬Í¬Ê±¾ÉµÄtreeºÍblob²»»á±»É¾³ı¡£
- * 		Èç¹ûĞÂÔöÁËÈ«ĞÂµÄÎÄ¼ş£¬¾ÍÔÚobjectÂ·¾¶ÏÂĞÂÔöĞÂµÄtree»òblob
- * 	ÓÉ´Ë£¬±ã¿ÉÖªËùÓĞµÄÀúÊ·°æ±¾µÄÎÄ¼şÄÚÈİ¡£
+/*è§£é‡Šä¸€ä¸‹objectè·¯å¾„ï¼š
+ * 	å¯¹äºç¬¬ä¸€æ¬¡commit, æŠŠæ‰€æœ‰çš„treeå’Œblobå­˜åˆ°è¿™ä¸ªè·¯å¾„ä¸‹ã€‚
+ * 		å¦‚æœæ˜¯ä¸åŒæ–‡ä»¶åï¼Œä½†å†…å®¹å®Œå…¨ç›¸åŒçš„å­æ–‡ä»¶ï¼Œåªä¼šä¿å­˜ä¸€ä¸ªblobï¼Œè€Œä¸æ˜¯ä¸¤ä¸ªã€‚
+ * 	å¯¹äºç¬¬äºŒæ¬¡commitï¼š
+ * 		å¦‚æœæŸäº›æ—§æ–‡ä»¶æ”¹åŠ¨äº†ï¼Œåˆ™ä¼šåœ¨è¯¥objectè·¯å¾„ä¸‹æ–°å¢ç›¸åº”çš„treeå’Œblobï¼ŒåŒæ—¶æ—§çš„treeå’Œblobä¸ä¼šè¢«åˆ é™¤ã€‚
+ * 		å¦‚æœæ–°å¢äº†å…¨æ–°çš„æ–‡ä»¶ï¼Œå°±åœ¨objectè·¯å¾„ä¸‹æ–°å¢æ–°çš„treeæˆ–blob
+ * 	ç”±æ­¤ï¼Œä¾¿å¯çŸ¥æ‰€æœ‰çš„å†å²ç‰ˆæœ¬çš„æ–‡ä»¶å†…å®¹ã€‚
  * 
  */
 
@@ -28,12 +28,12 @@ import java.util.Scanner;
 public class RollBack {
 	private String treeKey;
 	private String treePath;
-	private String goalPath = Global.filePath;  //»Ø¹ö³öÀ´µÄÎÄ¼şÈ«²¿·ÅÔÚÕâ¸öÂ·¾¶ÏÂ£¬Ò²¾ÍÊÇÏÈÇå¿Õ¹¤×÷Çø£¬È»ºóÔÙĞÂÌî³ä¹¤×÷Çø
+	private String goalPath = Global.filePath;  //å›æ»šå‡ºæ¥çš„æ–‡ä»¶å…¨éƒ¨æ”¾åœ¨è¿™ä¸ªè·¯å¾„ä¸‹ï¼Œä¹Ÿå°±æ˜¯å…ˆæ¸…ç©ºå·¥ä½œåŒºï¼Œç„¶åå†æ–°å¡«å……å·¥ä½œåŒº
 	private String current_branch_path;
 	
 	RollBack( String old_commit ) throws IOException {
 		
-		//µÃµ½µ±Ç°·ÖÖ§BranchµÄÎÄ¼ş¼ĞÂ·¾¶
+		//å¾—åˆ°å½“å‰åˆ†æ”¯Branchçš„æ–‡ä»¶å¤¹è·¯å¾„
 		Global g = new Global();
 		current_branch_path = Global.gitPath;
 		
@@ -44,18 +44,18 @@ public class RollBack {
 		treeKey = input1.nextLine();
 		input1.close();
 		
-		//ÏÈ°Ñ¹¤×÷ÇøÎÄ¼ş¼ĞÉ¾¸É¾»£¬×¢Òâ×î´óµÄÎÄ¼ş¼Ğ±¾Éí²»ÄÜÉ¾µô¡£
+		//å…ˆæŠŠå·¥ä½œåŒºæ–‡ä»¶å¤¹åˆ å¹²å‡€ï¼Œæ³¨æ„æœ€å¤§çš„æ–‡ä»¶å¤¹æœ¬èº«ä¸èƒ½åˆ æ‰ã€‚
 		File folder = new File ( goalPath );
 		new DeleteFolder(folder); 
 		
 		treePath = Global.objectPath + "\\" + treeKey;
 		
 		gen_file( treePath, folder.getPath() );
-		System.out.println("»Ø¹ö³É¹¦£¡");
+		System.out.println("å›æ»šæˆåŠŸï¼");
 		
 	}
 	
-	//¸ù¾İtreeÎÄ¼şµÄÄÚÈİ£¬»¹Ô­³öÀúÊ·×´Ì¬µÄÎÄ¼ş¼Ğ
+	//æ ¹æ®treeæ–‡ä»¶çš„å†…å®¹ï¼Œè¿˜åŸå‡ºå†å²çŠ¶æ€çš„æ–‡ä»¶å¤¹
 	public boolean gen_file( String treePath, String goalPath ) throws IOException {
 		File file2 = new File ( treePath );
 		Scanner input2 = new Scanner( file2 );
@@ -63,18 +63,18 @@ public class RollBack {
 		Tree_content  read_a_line = new Tree_content();
 		
 		while ( input2.hasNextLine() ) {
-			oneLine = input2.nextLine();         //ÒÀ´Î¶ÁÈ¡treeÎÄ¼şÖĞÃ¿Ò»ĞĞµÄÄÚÈİ
+			oneLine = input2.nextLine();         //ä¾æ¬¡è¯»å–treeæ–‡ä»¶ä¸­æ¯ä¸€è¡Œçš„å†…å®¹
 			read_a_line.get_tree_content(oneLine);
 			
-			String copyedPath = Global.objectPath + "\\" + read_a_line.getKey();  //ÕâÊÇ½«±»»¹Ô­µÄÎÄ¼şµÄÂ·¾¶
+			String copyedPath = Global.objectPath + "\\" + read_a_line.getKey();  //è¿™æ˜¯å°†è¢«è¿˜åŸçš„æ–‡ä»¶çš„è·¯å¾„
 			
-			if (read_a_line.getType().equals("Blob")) {       //£¡£¡×¢Òâ²»ÄÜÊÇ==   
+			if (read_a_line.getType().equals("Blob")) {       //ï¼ï¼æ³¨æ„ä¸èƒ½æ˜¯==   
 				new CopyBlob( copyedPath, goalPath, read_a_line.getName() );
 			}
 			else if (read_a_line.getType().equals("Tree")) {
 				String sec_file_path = goalPath + "\\" + read_a_line.getName();
 				File sec_file = new File( sec_file_path  );
-				sec_file.mkdir();        //½¨Á¢¶ş¼¶ÎÄ¼ş¼Ğ
+				sec_file.mkdir();        //å»ºç«‹äºŒçº§æ–‡ä»¶å¤¹
 				
 				gen_file( copyedPath ,sec_file_path  );
 			}
